@@ -20,4 +20,9 @@ public class TestCRSResponse {
     public Integer aprobareaPartenerului;
     public Integer subminareParentala;
     public Integer expunereLaConflict;
+
+    public TestCRSResponse(String numeClient, String mailClient) {
+        this.numeClient = numeClient;
+        this.mailClient = mailClient;
+    }
 }

@@ -126,6 +126,11 @@
 
     <div class="container">
         <form th:action="@{/scoreTestCRS}" th:object="${formCRS}" method="post" class="form-container">
+
+            <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+                <p>Toate întrebările trebuie să aibă cel puțin un răspuns selectat.</p>
+            </div>
+
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="mb-4">
@@ -211,6 +216,7 @@
                     </div>
                 </div>
             </div>
+
         </form>
     </div>
 

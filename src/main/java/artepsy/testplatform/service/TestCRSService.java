@@ -3,6 +3,7 @@ package artepsy.testplatform.service;
 import artepsy.testplatform.bo.TestCRS;
 import artepsy.testplatform.datamodels.request.TestCRSRequest;
 import artepsy.testplatform.datamodels.response.TestCRSResponse;
+import artepsy.testplatform.utils.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ public class TestCRSService {
     private final TestCRS testCRS;
 
     public TestCRSResponse scoreTestCRS(TestCRSRequest request) {
-        TestCRSResponse response = new TestCRSResponse();
+        TestCRSResponse response = new TestCRSResponse(request.getNumeClient(), request.getMailClient());
         int acordParental = 0;
         int apropiereParentala = 0;
         int suportParental = 0;
@@ -34,7 +35,7 @@ public class TestCRSService {
                 .sorted(Map.Entry.comparingByKey())
                 .toList()) {
             if (acordParentalList.contains(entry.getKey())) {
-                acordParental = acordParental + entry.getValue();
+                acordParental = acordParental + Utils.reverseValue(entry.getValue(), 0, 6);
             }
             if (apropiereParentalaList.contains(entry.getKey())) {
                 apropiereParentala = apropiereParentala + entry.getValue();
