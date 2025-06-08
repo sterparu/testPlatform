@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>CRS form</title>
+
+    <!-- Bootstrap 5 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container mt-4">
+        <h1 class="fw-bold text-primary fs-5 text-center">Scala Relațiilor de Coparentalitate</h1>
+    </div>
+
+    <form th:action="@{/scoreTestCRS}" th:object="${formCRS}" method="post">
+        <div class="text-center">
+            <div class="form-control mb-3 mt-3">
+                <input type="text" style="width:400px;" class="form-control" id="numeClient"  th:field="*{numeClient}" placeholder="Nume si prenume">
+                <div class="text-danger" th:if="${#fields.hasErrors('numeClient')}" th:errors="*{numeClient}">Completati numele si prenumele</div>
+                <input type="email" style="width:400px;" class="form-control" id="mailClient"  th:field="*{mailClient}" placeholder="Adresa de email">
+                <div class="text-danger" th:if="${#fields.hasErrors('mailClient')}" th:errors="*{mailClient}">Completati adresa de email</div>
+            </div>
+
+            <div class="fw-bold mx-auto" style="text-align: justify; width: 60%;">
+                Vă rugăm să răspundeți la întrebările de mai jos gândindu-vă la felul în care procedați sau gândiți dumneavoastră de obicei în relația cu celălalt părinte al copilului, indiferent de statusul marital pe care îl aveți (căsătorit, comuniune consensuală, divorțat).
+            </div>
+
+            <div class="fw-bold mx-auto" style="text-align: justify; width: 60%; margin-top: 20px;">
+                0 – Deloc adevărat
+            </div>
+            <div class="fw-bold mx-auto" style="text-align: justify; width: 60%; margin-bottom: 20px;">
+                6 – Foarte adevărat
+            </div>
+
+            <div th:each="scl, iterStat : *{scoresList}" class="fw-bold mx-auto" style="text-align: justify; width: 60%; margin-top: 20px">
+                <input type="hidden" th:field="*{scoresList[__${iterStat.index}__].questionNumber}" />
+                <p>
+                    <strong>[[${scl.questionNumber}]]. </strong>
+                    <span th:switch="${scl.questionNumber}">
+                        <span th:case="1">Consider că partenerul meu/partenera mea este un părinte bun.</span>
+                        <span th:case="2">Relația cu partenerul meu/partenera mea este mai puternică acum decât înainte de a avea un copil.</span>
+                        <span th:case="3">Partenerul meu/partenera mea îmi cere părerea cu privire la probleme legate de creșterea și educarea copiilor.</span>
+                        <span th:case="4">Partenerul meu/partenera mea îi oferă multă atenție copilului nostru.</span>
+                        <span th:case="5">Partenerul meu/partenera mea și eu avem idei diferite despre cum să ne creștem copilul. (R)</span>
+                        <span th:case="6">Partenerul meu/partenera mea îmi spune că fac o treabă bună sau îmi arată în alte feluri că sunt un părinte bun.</span>
+                        <span th:case="7">Partenerul meu/partenera mea și cu mine avem idei diferite în ceea ce privește mâncatul, dormitul și alte activități obișnuite ale copilului nostru. (R)</span>
+                        <span th:case="8">Partenerul meu/partenera mea câteodată face glume sau comentarii sarcastice despre felul în care sunt eu ca părinte.</span>
+                        <span th:case="9">Partenerul meu/partenera mea nu are încredere în abilitățile mele de părinte.</span>
+                        <span th:case="10">Partenerul meu/partenera mea este sensibil/ă la nevoile și sentimentele/emoțiile copilului nostru.</span>
+                        <span th:case="11">Partenerul meu/partenera mea și eu avem standarde diferite pentru comportamentul copilului nostru. (R)</span>
+                        <span th:case="12">Partenerul meu/partenera mea încearcă să arate că este mai bun/ă decât mine în îngrijirea copilului nostru.</span>
+                        <span th:case="13">Mă simt apropiat/ă de partenerul meu/partenera mea atunci când îl/o văd jucându-se cu copilul nostru.</span>
+                        <span th:case="14">Partenerul meu/partenera mea are multă răbdare cu copilul nostru.</span>
+                        <span th:case="15">Deseori discutăm despre cel mai bun mod de a împlini nevoile copilului nostru.</span>
+                        <span th:case="16">Când suntem toți trei împreună, câteodată partenerul meu/partenera mea concurează cu mine pentru atenția copilului nostru.</span>
+                        <span th:case="17">Partenerul meu/partenera mea discreditează capacitatea mea de a fi părinte.</span>
+                        <span th:case="18">Partenerul meu/partenera mea este dispus/ă să facă sacrificii personale pentru a ajuta la îngrijirea copilului nostru.</span>
+                        <span th:case="19">Creștem și ne maturizăm împreună prin experiențele noastre ca părinți.</span>
+                        <span th:case="20">Partenerul meu/partenera mea apreciază cât de mult mă străduiesc să fiu un părinte bun.</span>
+                        <span th:case="21">Când mă simt copleșit(ă) ca părinte, partenera mea/partenerul meu îmi oferă sprijinul suplimentar de care am nevoie.</span>
+                        <span th:case="22">Partenerul meu/partenera mea mă face să mă simt că sunt cel mai bun părinte posibil pentru copilul nostru.</span>
+                        <span th:case="23">Rolurile de părinți ne-au furnizat un obiectiv comun pentru viitor.</span>
+                        <span th:case="24">Se întâmplă să te afli într-o interacțiune ușor tensionată sau sarcastică cu partenera/partenerul tău?</span>
+                        <span th:case="25">Să te cerți cu partenerul pe tema copilulului vostru, în prezența copilului?</span>
+                        <span th:case="26">Să te cerți despre relația voastră sau despre problemele maritale care nu au legătură cu copilul, în prezența copilului?</span>
+                        <span th:case="27">Unul sau amândoi să vă spuneți lucruri crude/nemiloase sau dureroase în fața copilului?</span>
+                        <span th:case="28">Țipați unul la celălalt când copilul este în preajmă și vă poate auzi?</span>
+                    </span>
+                </p>
+
+                <span th:each="i : ${#numbers.sequence(0,6)}" style="margin-left: 10px;">
+                        <input type="radio"
+                               th:id="'q' + ${scl.questionNumber} + '_a' + ${i}"
+                               th:name="scoresList[__${iterStat.index}__].answer"
+                               th:value="${i}"
+                               th:checked="${scl.answer != null} ? ${scl.answer} == ${i} : false" />
+                        <label th:for="'q' + ${scl.questionNumber} + '_a' + ${i}"
+                               style="cursor: pointer; border: 1px solid #ccc; border-radius: 50%;
+                                      display: inline-block; width: 20px; height: 20px; text-align: center; line-height: 20px; user-select:none;">
+                            [[${i}]]
+                        </label>
+                </span>
+                <div th:if="${#fields.hasErrors('scoresList[__${iterStat.index}__].answer')}" class="text-danger">
+                    <p th:errors="*{scoresList[__${iterStat.index}__].answer}">Alegeți un răspuns pentru toate întrebările</p>
+                </div>
+
+                <div th:if="${scl.questionNumber == 23}" style="margin: 30px 0; font-style: italic;">
+                    <p>Într-o săptămână tipică, atunci când toți trei (dvs., celălalt părinte și copilul) sunteți împreună, cât de des se întâmplă unul din fenomenele de mai jos?</p>
+                </div>
+
+            </div>
+            <br/><br/>
+        </div>
+
+        <button type="submit" class="btn btn-success rounded-pill" style="width: 10%; margin-left: 300px; margin-bottom: 30px;">Trimite răspunsuri</button>
+
+    </form>
+
+
+    <!-- Bootstrap 5 JS CDN (with Popper.js for components like dropdowns) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
