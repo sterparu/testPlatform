@@ -12,7 +12,7 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TestCRSRequest {
-     private String nume;
-     private String mail;
-    private Map<Integer,Integer> scores ;
+     private String numeClient;
+     private String mailClient;
+    private Map<Integer,Integer> scores;
 }

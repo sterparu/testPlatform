@@ -54,7 +54,6 @@ public class TestCRSController {
     }
 
     @PostMapping("/scoreTestCRS")
-    @ResponseStatus(HttpStatus.OK)
     public String handleFormSubmit(@Valid @ModelAttribute("formCRS") TestCRSForm formCRS, BindingResult bindingResult, RedirectAttributes redirectAttributes){
         List<QuestionAnswerInt> answers = formCRS.getScoresList();
 
@@ -78,7 +77,6 @@ public class TestCRSController {
     }
 
     @PostMapping("/api/scoreTestCRS")
-    @ResponseStatus(HttpStatus.OK)
     public TestCRSResponse scoreTestCRSApi(@RequestBody TestCRSRequest request) {
         log.info("Received request to score TestCRS: {}", request);
         return testCRSService.scoreTestCRS(request);

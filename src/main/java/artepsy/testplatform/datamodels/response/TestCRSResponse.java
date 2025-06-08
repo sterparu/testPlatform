@@ -12,6 +12,8 @@ import java.util.Map;
 @NoArgsConstructor
 public class TestCRSResponse {
 
+    private String numeClient;
+    private String mailClient;
     public Integer acordParental;
     public Integer apropiereParentala;
     public Integer suportParental;
