@@ -60,6 +60,32 @@
             color: var(--primary-color);
         }
 
+        .score-details {
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--primary-color);
+            border-right: 4px solid var(--primary-color);
+            background-color: white;
+            transition: transform 0.3s ease;
+        }
+
+        .score-details-light {
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background-color: #cfe2ff;
+            transition: transform 0.3s ease;
+        }
+
+        .score-details-white {
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background-color: white;
+            transition: transform 0.3s ease;
+        }
+
         .score-label {
             color: var(--accent-color);
             font-weight: 500;
@@ -86,6 +112,49 @@
         .client-info strong {
             color: var(--accent-color);
         }
+
+        .help {
+          position: relative;
+          cursor: pointer;
+          display: inline-block;
+          color: var(--accent-color);
+          font-weight: 500;
+        }
+
+        .help::after {
+          content: attr(data-tooltip); /* Tooltip text from data-tooltip attribute */
+          position: absolute;
+          bottom: 125%;                /* Position above the element */
+          left: 50%;
+          transform: translateX(-50%);
+          background-color: #e6f0ff;   /* Light blue background */
+          color: #333;
+          padding: 8px 12px;
+          border-radius: 6px;
+          white-space: pre-wrap;       /* Allow wrapping for long text */
+          width: max-content;
+          max-width: 250px;            /* Limit width for readability */
+          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+          opacity: 0;
+          visibility: hidden;
+          transition: opacity 0.3s ease;
+          z-index: 10;
+        }
+
+        .help:hover::after {
+          opacity: 1;
+          visibility: visible;
+        }
+
+        .toggle-row {
+          display: none;
+          margin-top: 1rem;
+          margin-bottom: 1rem;
+          background-color: #e6f0ff;
+          padding: 1rem;
+          border-radius: 8px;
+        }
+
     </style>
 </head>
 <body>
@@ -147,11 +216,105 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="result-container">
+                    <h5 class="mb-4" style="color: var(--primary-color);">Semnificația scorurilor</h5>
+
+                    <div class="row">
+                        <div class="col-md-4 score-details score-label">Denumirea scalei</div>
+                        <div class="col-md-4 score-details score-label">Scor mediu</div>
+                        <div class="col-md-4 score-details score-label">Scor maxim</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 score-details-light score-label help" onclick="toggleRow('acordParental')"
+                             data-tooltip="Apăsați pentru a vedea descrierea"
+                            >Acord parental</div>
+                        <div class="col-md-4 score-details-light score-label">9</div>
+                        <div class="col-md-4 score-details-light score-label">18</div>
+                    </div>
+
+                    <div id="acordParental" class="toggle-row">
+                        Dimensiunea „Acord parental” indică gradul în care ambii părinți împărtășesc o viziune comună și sunt în consens cu privire la aspectele esențiale ale creșterii și educației copilului. Este vorba despre un acord asupra regulilor, disciplinării, valorilor și a altor decizii majore care privesc dezvoltarea copilului. O relație de coparentalitate caracterizată de un nivel ridicat de „Acord parental” este caracteerizată prin colaborare, respect reciproc și o abordare coerentă în fața provocărilor parentale, minimizând conflictele sau dezacordurile care ar putea afecta copilul. Un scor scăzut indică o lipsă de consens între părinți în ceea ce privește deciziile legate de creșterea și educația copilului.
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 score-details-white score-label help" onclick="toggleRow('apropiereParentală')"
+                             data-tooltip="Apăsați pentru a vedea descrierea"
+                            >Apropiere parentală</div>
+                        <div class="col-md-4 score-details-white score-label">12</div>
+                        <div class="col-md-4 score-details-white score-label">24</div>
+                    </div>
+
+                    <div id="apropiereParentală" class="toggle-row">
+                        Dimensiunea „Apropiere parentală” se referă la gradul de afecțiune, respect și susținere reciprocă între părinți în cadrul relației de coparentalitate. Ea reflectă cât de apropiați emoțional se simt părinții unul de celălalt, în contextul responsabilităților legate de creșterea copilului, precum și nivelul de apreciere și sprijin pe care și-l oferă. Un scor ridicat la această scală indică o relație bazată pe încredere, comunicare pozitivă și afecțiune, în timp ce un scor scăzut denotă distanțare emoțională, lipsa sprijinului sau conflicte nerezolvate între părinți.
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 score-details-light score-label help" onclick="toggleRow('suportParental')"
+                             data-tooltip="Apăsați pentru a vedea descrierea"
+                        >Suport parental</div>
+                        <div class="col-md-4 score-details-light score-label">18</div>
+                        <div class="col-md-4 score-details-light score-label">36</div>
+                    </div>
+
+                    <div id="suportParental" class="toggle-row">
+                        Dimensiunea „Suport parental” evaluează nivelul de susținere pe care părinții și-l oferă reciproc. Aceasta include aspecte precum încurajarea, ajutorul practic, validarea deciziilor și respectul față de competențele celuilalt părinte. Un scor ridicat la această scală indică sprijinul reciproc și activ al părinților, respectarea și aprecierea rolului și a contribuțiilor fiecăruia în creșterea copilului. În schimb, un scor scăzut reflectă criticile frecvente sau minimalizarea rolului celuilalt părinte în educarea copilului, lipsa de încurajare sau de recunoaștere a eforturilor celuilalt părinte, comunicare deficitară cu privire la nevoile și așteptările legate de parenting, conflictele și tensiunile.
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 score-details-white score-label help" onclick="toggleRow('aprobareaPartenerului')"
+                             data-tooltip="Apăsați pentru a vedea descrierea"
+                        >Aprobarea partenerului</div>
+                        <div class="col-md-4 score-details-white score-label">15</div>
+                        <div class="col-md-4 score-details-white score-label">30</div>
+                    </div>
+
+                    <div id="aprobareaPartenerului" class="toggle-row">
+                        Dimensiunea „Aprobarea partenerului” măsoară gradul de respect, aprobare și susținere pe care un părinte îl simte din partea celuilalt părinte în ceea ce privește abilitățile și deciziile legate de creșterea copilului. Aceasta reflectă în ce măsură un părinte simte că este apreciat și validat în rolul său parental. Scorurile ridicate sugerează o relație de coparentalitate caracterizată prin respect reciproc, susținere și încredere în competențele celuilalt părinte, validarea reciprocă a acestor competențe. În schimb, scorurile scăzute indică o lipsă de încredere, critici frecvente și subminarea abilităților celuilalt părinte, ceea ce poate duce la tensiuni, conflicte și o colaborare ineficientă.
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 score-details-light score-label help" onclick="toggleRow('subminareParentală')"
+                             data-tooltip="Apăsați pentru a vedea descrierea"
+                        >Subminare parentală</div>
+                        <div class="col-md-4 score-details-light score-label">15</div>
+                        <div class="col-md-4 score-details-light score-label">30</div>
+                    </div>
+
+                    <div id="subminareParentală" class="toggle-row">
+                        Dimensiunea „Subminare parentală” indică tendința unui părinte de a submina sau critica autoritatea, deciziile sau competențele celuilalt părinte în fața copilului sau în contextul parental. Aceasta se referă la acțiuni sau comportamente prin care un părinte diminuează, intenționat sau nu, încrederea și respectul copilului față de celălalt părinte. Un scor ridicat la această dimensiune indică o tendință frecventă de subminare, cum ar fi criticile deschise ale deciziilor celuilalt părinte, dezacorduri exprimate în fața copilului sau comportamentele care subminează autoritatea celuilalt părinte. Acest tip de dinamică crează tensiuni semnificative în relația de coparentalitate și poate afecta stabilitatea emoțională a copilului. Pe de altă parte, un scor scăzut sugerează că părinții își respectă reciproc deciziile și autoritatea în fața copilului, chiar și atunci când apar dezacorduri. O astfel de dinamică favorizează o relație de coparentalitate bazată pe respect reciproc, în care copilul primește mesaje consistente și concordante de la ambii părinți.
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 score-details-white score-label help" onclick="toggleRow('expunereConflict')"
+                             data-tooltip="Apăsați pentru a vedea descrierea"
+                        >Expunere la conflict</div>
+                        <div class="col-md-4 score-details-white score-label">15</div>
+                        <div class="col-md-4 score-details-white score-label">30</div>
+                    </div>
+
+                    <div id="expunereConflict" class="toggle-row">
+                        Dimensiunea „Expunere la conflict” măsoară gradul în care copilul este expus la conflictele dintre părinți. Aceasta include observarea directă a certurilor, a tensiunilor sau a dezacordurilor deschise între părinți, fie că sunt legate de parenting, fie de alte aspecte din relația lor. Un scor ridicat pe această dimensiune indică o expunere frecventă a copilului la conflicte, ceea ce poate afectează negativ starea emoțională și sentimentul de securitate al copilului, care poate fi influențat de tensiunea și instabilitatea dintre părinți. Un scor scăzut sugerează că părinții își gestionează conflictele într-un mod sănătos și nu își expun copilul la tensiuni sau certuri.
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Bootstrap 5 JS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function toggleRow(id) {
+          const row = document.getElementById(id);
+          if (row.style.display === "none" || row.style.display === "") {
+            row.style.display = "block";
+          } else {
+            row.style.display = "none";
+          }
+        }
+    </script>
 </body>
 </html>
