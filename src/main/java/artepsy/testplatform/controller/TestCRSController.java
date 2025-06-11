@@ -32,7 +32,17 @@ public class TestCRSController {
     private final TestCRSService testCRSService;
     private final PDFService pdfService;
     private final EmailService emailService;
+    @GetMapping("/")
+    public String getFormMain(Model theModel){
+        List<QuestionAnswerInt> scoresList  = new ArrayList<>();
 
+        for( int i = 1; i <= 28; i++){
+            scoresList.add(new QuestionAnswerInt(i, null));
+        }
+
+        theModel.addAttribute("formCRS", new TestCRSForm(scoresList, 0, 0, 0, 0, 0, 0));
+        return "formCRS";
+    }
     @GetMapping("/formCRS")
     public String getForm(Model theModel){
         List<QuestionAnswerInt> scoresList  = new ArrayList<>();
