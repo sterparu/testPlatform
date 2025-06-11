@@ -6,20 +6,21 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Map;
-@Setter
+
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class TestCRSResponse {
-
     private String numeClient;
     private String mailClient;
-    public Integer acordParental;
-    public Integer apropiereParentala;
-    public Integer suportParental;
-    public Integer aprobareaPartenerului;
-    public Integer subminareParentala;
-    public Integer expunereLaConflict;
+    private Map<Integer, Integer> scores;
+    private int acordParental;
+    private int apropiereParentala;
+    private int suportParental;
+    private int aprobareaPartenerului;
+    private int subminareParentala;
+    private int expunereLaConflict;
 
     public TestCRSResponse(String numeClient, String mailClient) {
         this.numeClient = numeClient;

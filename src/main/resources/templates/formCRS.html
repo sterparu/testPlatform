@@ -117,22 +117,25 @@
     </style>
 </head>
 <body>
-
     <div class="header-section">
-        <div class="container">
-            <h1 class="text-center fw-bold" style="color: var(--primary-color);">Scala Relațiilor de Coparentalitate</h1>
+        <div class="container text-center">
+            <img src="/logo_artepsy.png" alt="ArtePsy Logo" style="max-width: 120px; margin-bottom: 1rem;">
+            <h1 class="text-center fw-bold" style="color: var(--primary-color); font-size: 1.8rem;">Scala Relațiilor de Coparentalitate</h1>
         </div>
     </div>
 
     <div class="container">
         <form th:action="@{/scoreTestCRS}" th:object="${formCRS}" method="post" class="form-container">
 
-            <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
-                <p>Toate întrebările trebuie să aibă cel puțin un răspuns selectat.</p>
+            <div th:if="${emailStatus}" th:text="${emailStatus}" class="alert" 
+                 th:classappend="${emailStatus.contains('succes') ? 'alert-success' : 'alert-danger'}">
             </div>
 
             <div class="row justify-content-center">
                 <div class="col-md-8">
+                    <div class="mb-2">
+                        <p class="text-muted small bg-light p-2 rounded border-start border-3 border-primary"><em>* Vă informăm că numele și email-ul dumneavoastră nu sunt păstrate în datele aplicației.</em></p>
+                    </div>
                     <div class="mb-4">
                         <input type="text" class="form-control" id="numeClient" th:field="*{numeClient}" placeholder="Nume și prenume">
                         <div class="text-danger" th:if="${#fields.hasErrors('numeClient')}" th:errors="*{numeClient}"></div>
@@ -155,7 +158,7 @@
                         <span>6 – Foarte adevărat</span>
                     </div>
 
-                    <div th:each="scl, iterStat : *{scoresList}" class="question-container">
+                    <div th:each="scl, iterStat : *{scoresList}" class="question-container" th:if="${scl.questionNumber <= 23}">
                         <input type="hidden" th:field="*{scoresList[__${iterStat.index}__].questionNumber}" />
                         <p class="mb-3">
                             <strong class="text-primary">[[${scl.questionNumber}]]. </strong>
@@ -183,6 +186,42 @@
                                 <span th:case="21">Când mă simt copleșit(ă) ca părinte, partenera mea/partenerul meu îmi oferă sprijinul suplimentar de care am nevoie.</span>
                                 <span th:case="22">Partenerul meu/partenera mea mă face să mă simt că sunt cel mai bun părinte posibil pentru copilul nostru.</span>
                                 <span th:case="23">Rolurile de părinți ne-au furnizat un obiectiv comun pentru viitor.</span>
+                            </span>
+                        </p>
+
+                        <div class="radio-options">
+                            <span th:each="i : ${#numbers.sequence(0,6)}" class="radio-option">
+                                <input type="radio"
+                                       th:id="'q' + ${scl.questionNumber} + '_a' + ${i}"
+                                       th:name="scoresList[__${iterStat.index}__].answer"
+                                       th:value="${i}"
+                                       th:checked="${scl.answer != null} ? ${scl.answer} == ${i} : false" />
+                                <label th:for="'q' + ${scl.questionNumber} + '_a' + ${i}">[[${i}]]</label>
+                            </span>
+                        </div>
+
+                        <div th:if="${#fields.hasErrors('scoresList[__${iterStat.index}__].answer')}" class="text-danger mt-2">
+                            <p th:errors="*{scoresList[__${iterStat.index}__].answer}">Alegeți un răspuns pentru toate întrebările</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="alert alert-info" role="alert">
+                        <p class="mb-0">Într-o săptămână tipică, atunci când toți trei (dvs., celălalt părinte și copilul) sunteți împreună, cât de des se întâmplă unul din fenomenele de mai jos?</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div th:each="scl, iterStat : *{scoresList}" class="question-container" th:if="${scl.questionNumber > 23}">
+                        <input type="hidden" th:field="*{scoresList[__${iterStat.index}__].questionNumber}" />
+                        <p class="mb-3">
+                            <strong class="text-primary">[[${scl.questionNumber}]]. </strong>
+                            <span th:switch="${scl.questionNumber}">
                                 <span th:case="24">Se întâmplă să te afli într-o interacțiune ușor tensionată sau sarcastică cu partenera/partenerul tău?</span>
                                 <span th:case="25">Să te cerți cu partenerul pe tema copilulului vostru, în prezența copilului?</span>
                                 <span th:case="26">Să te cerți despre relația voastră sau despre problemele maritale care nu au legătură cu copilul, în prezența copilului?</span>
@@ -205,12 +244,12 @@
                         <div th:if="${#fields.hasErrors('scoresList[__${iterStat.index}__].answer')}" class="text-danger mt-2">
                             <p th:errors="*{scoresList[__${iterStat.index}__].answer}">Alegeți un răspuns pentru toate întrebările</p>
                         </div>
-
-                        <div th:if="${scl.questionNumber == 23}" class="alert alert-info mt-3">
-                            <p class="mb-0"><em>Într-o săptămână tipică, atunci când toți trei (dvs., celălalt părinte și copilul) sunteți împreună, cât de des se întâmplă unul din fenomenele de mai jos?</em></p>
-                        </div>
                     </div>
+                </div>
+            </div>
 
+            <div class="row justify-content-center">
+                <div class="col-md-8">
                     <div class="text-center mt-4">
                         <button type="submit" class="submit-btn">Trimite răspunsuri</button>
                     </div>
@@ -220,7 +259,15 @@
         </form>
     </div>
 
+    <div class="container">
+        <div class="text-center" style="font-size: 0.95rem; color: #6B7C93; margin-top: 2.5rem; margin-bottom: 0.5rem;">
+            <hr style="margin: 1.5rem auto 1rem auto; width: 60%; border-top: 1px solid #e1e8ed;">
+            <span style="font-style: italic;">Dumitriu, C. G., Dudu, A., &amp; Butac, L. M. (2022). Validation of the Romanian version of coparenting relationship scale. <br>International Research Journal of Public and Environmental Health, 9(1), 24-34. <a href="https://doi.org/10.15739/irjpeh.22.004" target="_blank" style="color: #357ABD; text-decoration: underline;">https://doi.org/10.15739/irjpeh.22.004</a>.</span>
+        </div>
+    </div>
+
     <!-- Bootstrap 5 JS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>

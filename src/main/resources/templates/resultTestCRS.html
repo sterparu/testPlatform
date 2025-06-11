@@ -60,6 +60,23 @@
             color: var(--primary-color);
         }
 
+        .score-value.warning {
+            color: var(--danger-color);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.7;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
         .score-details {
             border-radius: 10px;
             padding: 1.5rem;
@@ -89,6 +106,28 @@
         .score-label {
             color: var(--accent-color);
             font-weight: 500;
+            cursor: pointer;
+            text-decoration: underline;
+            transition: color 0.3s ease;
+            display: inline-block;
+        }
+
+        .score-label:hover {
+            color: var(--primary-color);
+        }
+
+        .score-label.help {
+            position: relative;
+            padding-right: 20px;
+        }
+
+        .score-label.help::after {
+            content: "▼";
+            font-size: 0.8em;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
         }
 
         .client-info {
@@ -111,6 +150,16 @@
 
         .client-info strong {
             color: var(--accent-color);
+        }
+
+        .client-info span {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 0.2rem 0.5rem;
+            background-color: rgba(74, 144, 226, 0.1);
+            border-radius: 4px;
+            display: inline-block;
         }
 
         .help {
@@ -155,13 +204,40 @@
           border-radius: 8px;
         }
 
+        .submit-btn:hover {
+            background-color: #357ABD;
+            transform: translateY(-2px);
+        }
+
+        .email-btn {
+            background-color: var(--success-color);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            margin-top: 2rem;
+        }
+
+        .email-btn:hover {
+            background-color: #27AE60;
+            transform: translateY(-2px);
+        }
+
+        .email-btn:disabled {
+            background-color: #95A5A6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
     </style>
 </head>
 <body>
-
     <div class="header-section">
-        <div class="container">
-            <h1 class="text-center fw-bold" style="color: var(--primary-color);">Rezultat test: Scala Relațiilor de Coparentalitate</h1>
+        <div class="container text-center">
+            <img src="/logo_artepsy.png" alt="ArtePsy Logo" style="max-width: 120px; margin-bottom: 1rem;">
+            <h1 class="text-center fw-bold" style="color: var(--primary-color); font-size: 1.8rem;">Rezultate Chestionar CRS</h1>
         </div>
     </div>
 
@@ -181,37 +257,37 @@
                         <div class="col-md-6">
                             <div class="score-card">
                                 <div class="score-label">Acord parental</div>
-                                <div class="score-value" th:text="${answers.acordParental}"></div>
+                                <div class="score-value" th:classappend="${answers.acordParental > 16 ? 'warning' : ''}" th:text="${answers.acordParental}"></div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="score-card">
                                 <div class="score-label">Apropiere parentală</div>
-                                <div class="score-value" th:text="${answers.apropiereParentala}"></div>
+                                <div class="score-value" th:classappend="${answers.apropiereParentala > 19 ? 'warning' : ''}" th:text="${answers.apropiereParentala}"></div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="score-card">
                                 <div class="score-label">Suport parental</div>
-                                <div class="score-value" th:text="${answers.suportParental}"></div>
+                                <div class="score-value" th:classappend="${answers.suportParental > 25 ? 'warning' : ''}" th:text="${answers.suportParental}"></div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="score-card">
                                 <div class="score-label">Aprobarea partenerului</div>
-                                <div class="score-value" th:text="${answers.aprobareaPartenerului}"></div>
+                                <div class="score-value" th:classappend="${answers.aprobareaPartenerului > 22 ? 'warning' : ''}" th:text="${answers.aprobareaPartenerului}"></div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="score-card">
                                 <div class="score-label">Subminare parentală</div>
-                                <div class="score-value" th:text="${answers.subminareParentala}"></div>
+                                <div class="score-value" th:classappend="${answers.subminareParentala > 22 ? 'warning' : ''}" th:text="${answers.subminareParentala}"></div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="score-card">
                                 <div class="score-label">Expunere la conflict</div>
-                                <div class="score-value" th:text="${answers.expunereLaConflict}"></div>
+                                <div class="score-value" th:classappend="${answers.expunereLaConflict > 22 ? 'warning' : ''}" th:text="${answers.expunereLaConflict}"></div>
                             </div>
                         </div>
                     </div>
@@ -235,7 +311,7 @@
                     </div>
 
                     <div id="acordParental" class="toggle-row">
-                        Dimensiunea „Acord parental” indică gradul în care ambii părinți împărtășesc o viziune comună și sunt în consens cu privire la aspectele esențiale ale creșterii și educației copilului. Este vorba despre un acord asupra regulilor, disciplinării, valorilor și a altor decizii majore care privesc dezvoltarea copilului. O relație de coparentalitate caracterizată de un nivel ridicat de „Acord parental” este caracteerizată prin colaborare, respect reciproc și o abordare coerentă în fața provocărilor parentale, minimizând conflictele sau dezacordurile care ar putea afecta copilul. Un scor scăzut indică o lipsă de consens între părinți în ceea ce privește deciziile legate de creșterea și educația copilului.
+                        Dimensiunea "Acord parental" indică gradul în care ambii părinți împărtășesc o viziune comună și sunt în consens cu privire la aspectele esențiale ale creșterii și educației copilului. Este vorba despre un acord asupra regulilor, disciplinării, valorilor și a altor decizii majore care privesc dezvoltarea copilului. O relație de coparentalitate caracterizată de un nivel ridicat de "Acord parental" este caracteerizată prin colaborare, respect reciproc și o abordare coerentă în fața provocărilor parentale, minimizând conflictele sau dezacordurile care ar putea afecta copilul. Un scor scăzut indică o lipsă de consens între părinți în ceea ce privește deciziile legate de creșterea și educația copilului.
                     </div>
 
                     <div class="row">
@@ -247,7 +323,7 @@
                     </div>
 
                     <div id="apropiereParentală" class="toggle-row">
-                        Dimensiunea „Apropiere parentală” se referă la gradul de afecțiune, respect și susținere reciprocă între părinți în cadrul relației de coparentalitate. Ea reflectă cât de apropiați emoțional se simt părinții unul de celălalt, în contextul responsabilităților legate de creșterea copilului, precum și nivelul de apreciere și sprijin pe care și-l oferă. Un scor ridicat la această scală indică o relație bazată pe încredere, comunicare pozitivă și afecțiune, în timp ce un scor scăzut denotă distanțare emoțională, lipsa sprijinului sau conflicte nerezolvate între părinți.
+                        Dimensiunea "Apropiere parentală" se referă la gradul de afecțiune, respect și susținere reciprocă între părinți în cadrul relației de coparentalitate. Ea reflectă cât de apropiați emoțional se simt părinții unul de celălalt, în contextul responsabilităților legate de creșterea copilului, precum și nivelul de apreciere și sprijin pe care și-l oferă. Un scor ridicat la această scală indică o relație bazată pe încredere, comunicare pozitivă și afecțiune, în timp ce un scor scăzut denotă distanțare emoțională, lipsa sprijinului sau conflicte nerezolvate între părinți.
                     </div>
 
                     <div class="row">
@@ -259,7 +335,7 @@
                     </div>
 
                     <div id="suportParental" class="toggle-row">
-                        Dimensiunea „Suport parental” evaluează nivelul de susținere pe care părinții și-l oferă reciproc. Aceasta include aspecte precum încurajarea, ajutorul practic, validarea deciziilor și respectul față de competențele celuilalt părinte. Un scor ridicat la această scală indică sprijinul reciproc și activ al părinților, respectarea și aprecierea rolului și a contribuțiilor fiecăruia în creșterea copilului. În schimb, un scor scăzut reflectă criticile frecvente sau minimalizarea rolului celuilalt părinte în educarea copilului, lipsa de încurajare sau de recunoaștere a eforturilor celuilalt părinte, comunicare deficitară cu privire la nevoile și așteptările legate de parenting, conflictele și tensiunile.
+                        Dimensiunea "Suport parental" evaluează nivelul de susținere pe care părinții și-l oferă reciproc. Aceasta include aspecte precum încurajarea, ajutorul practic, validarea deciziilor și respectul față de competențele celuilalt părinte. Un scor ridicat la această scală indică sprijinul reciproc și activ al părinților, respectarea și aprecierea rolului și a contribuțiilor fiecăruia în creșterea copilului. În schimb, un scor scăzut reflectă criticile frecvente sau minimalizarea rolului celuilalt părinte în educarea copilului, lipsa de încurajare sau de recunoaștere a eforturilor celuilalt părinte, comunicare deficitară cu privire la nevoile și așteptările legate de parenting, conflictele și tensiunile.
                     </div>
 
                     <div class="row">
@@ -271,7 +347,7 @@
                     </div>
 
                     <div id="aprobareaPartenerului" class="toggle-row">
-                        Dimensiunea „Aprobarea partenerului” măsoară gradul de respect, aprobare și susținere pe care un părinte îl simte din partea celuilalt părinte în ceea ce privește abilitățile și deciziile legate de creșterea copilului. Aceasta reflectă în ce măsură un părinte simte că este apreciat și validat în rolul său parental. Scorurile ridicate sugerează o relație de coparentalitate caracterizată prin respect reciproc, susținere și încredere în competențele celuilalt părinte, validarea reciprocă a acestor competențe. În schimb, scorurile scăzute indică o lipsă de încredere, critici frecvente și subminarea abilităților celuilalt părinte, ceea ce poate duce la tensiuni, conflicte și o colaborare ineficientă.
+                        Dimensiunea "Aprobarea partenerului" măsoară gradul de respect, aprobare și susținere pe care un părinte îl simte din partea celuilalt părinte în ceea ce privește abilitățile și deciziile legate de creșterea copilului. Aceasta reflectă în ce măsură un părinte simte că este apreciat și validat în rolul său parental. Scorurile ridicate sugerează o relație de coparentalitate caracterizată prin respect reciproc, susținere și încredere în competențele celuilalt părinte, validarea reciprocă a acestor competențe. În schimb, scorurile scăzute indică o lipsă de încredere, critici frecvente și subminarea abilităților celuilalt părinte, ceea ce poate duce la tensiuni, conflicte și o colaborare ineficientă.
                     </div>
 
                     <div class="row">
@@ -283,7 +359,7 @@
                     </div>
 
                     <div id="subminareParentală" class="toggle-row">
-                        Dimensiunea „Subminare parentală” indică tendința unui părinte de a submina sau critica autoritatea, deciziile sau competențele celuilalt părinte în fața copilului sau în contextul parental. Aceasta se referă la acțiuni sau comportamente prin care un părinte diminuează, intenționat sau nu, încrederea și respectul copilului față de celălalt părinte. Un scor ridicat la această dimensiune indică o tendință frecventă de subminare, cum ar fi criticile deschise ale deciziilor celuilalt părinte, dezacorduri exprimate în fața copilului sau comportamentele care subminează autoritatea celuilalt părinte. Acest tip de dinamică crează tensiuni semnificative în relația de coparentalitate și poate afecta stabilitatea emoțională a copilului. Pe de altă parte, un scor scăzut sugerează că părinții își respectă reciproc deciziile și autoritatea în fața copilului, chiar și atunci când apar dezacorduri. O astfel de dinamică favorizează o relație de coparentalitate bazată pe respect reciproc, în care copilul primește mesaje consistente și concordante de la ambii părinți.
+                        Dimensiunea "Subminare parentală" indică tendința unui părinte de a submina sau critica autoritatea, deciziile sau competențele celuilalt părinte în fața copilului sau în contextul parental. Aceasta se referă la acțiuni sau comportamente prin care un părinte diminuează, intenționat sau nu, încrederea și respectul copilului față de celălalt părinte. Un scor ridicat la această dimensiune indică o tendință frecventă de subminare, cum ar fi criticile deschise ale deciziilor celuilalt părinte, dezacorduri exprimate în fața copilului sau comportamentele care subminează autoritatea celuilalt părinte. Acest tip de dinamică crează tensiuni semnificative în relația de coparentalitate și poate afecta stabilitatea emoțională a copilului. Pe de altă parte, un scor scăzut sugerează că părinții își respectă reciproc deciziile și autoritatea în fața copilului, chiar și atunci când apar dezacorduri. O astfel de dinamică favorizează o relație de coparentalitate bazată pe respect reciproc, în care copilul primește mesaje consistente și concordante de la ambii părinți.
                     </div>
 
                     <div class="row">
@@ -295,9 +371,20 @@
                     </div>
 
                     <div id="expunereConflict" class="toggle-row">
-                        Dimensiunea „Expunere la conflict” măsoară gradul în care copilul este expus la conflictele dintre părinți. Aceasta include observarea directă a certurilor, a tensiunilor sau a dezacordurilor deschise între părinți, fie că sunt legate de parenting, fie de alte aspecte din relația lor. Un scor ridicat pe această dimensiune indică o expunere frecventă a copilului la conflicte, ceea ce poate afectează negativ starea emoțională și sentimentul de securitate al copilului, care poate fi influențat de tensiunea și instabilitatea dintre părinți. Un scor scăzut sugerează că părinții își gestionează conflictele într-un mod sănătos și nu își expun copilul la tensiuni sau certuri.
+                        Dimensiunea "Expunere la conflict" măsoară gradul în care copilul este expus la conflicte dintre părinți. Aceasta include observarea directă a certurilor, a tensiunilor sau a dezacordurilor deschise între părinți, fie că sunt legate de parenting, fie de alte aspecte din relația lor. Un scor ridicat pe această dimensiune indică o expunere frecventă a copilului la conflicte, ceea ce poate afectează negativ starea emoțională și sentimentul de securitate al copilului, care poate fi influențat de tensiunea și instabilitatea dintre părinți. Un scor scăzut sugerează că părinții își gestionează conflicte într-un mod sănătos și nu își expun copilul la tensiuni sau certuri.
                     </div>
 
+                </div>
+
+                <div class="text-center">
+                    <form th:action="@{/sendEmail}" method="post">
+                        <input type="hidden" name="numeClient" th:value="${answers.numeClient}">
+                        <input type="hidden" name="mailClient" th:value="${answers.mailClient}">
+                        <button type="submit" class="email-btn">Trimite rezultatele pe email</button>
+                    </form>
+                    <div th:if="${emailStatus}" th:text="${emailStatus}" class="mt-3 alert" 
+                         th:classappend="${emailStatus.contains('succes') ? 'alert-success' : 'alert-danger'}">
+                    </div>
                 </div>
             </div>
         </div>
@@ -305,15 +392,16 @@
 
     <!-- Bootstrap 5 JS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <div th:replace="fragments/footer :: footer"></div>
 
-    <script>
+    <script th:inline="javascript">
         function toggleRow(id) {
-          const row = document.getElementById(id);
-          if (row.style.display === "none" || row.style.display === "") {
-            row.style.display = "block";
-          } else {
-            row.style.display = "none";
-          }
+            const row = document.getElementById(id);
+            if (row.style.display === "none" || row.style.display === "") {
+                row.style.display = "block";
+            } else {
+                row.style.display = "none";
+            }
         }
     </script>
 </body>

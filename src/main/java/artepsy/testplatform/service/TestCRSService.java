@@ -15,7 +15,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class TestCRSService {
     private final TestCRS testCRS;
-
+  private final TestCRSCacheService testCRSCacheService;
     public TestCRSResponse scoreTestCRS(TestCRSRequest request) {
         TestCRSResponse response = new TestCRSResponse(request.getNumeClient(), request.getMailClient());
         int acordParental = 0;
@@ -59,7 +59,7 @@ public class TestCRSService {
         response.setSuportParental(suportParental);
         response.setSubminareParentala(subminareParentala);
         response.setExpunereLaConflict(expunereLaConflict);
-
+        testCRSCacheService.saveResponse(response.getMailClient(),response);
         return response;
     }
 }

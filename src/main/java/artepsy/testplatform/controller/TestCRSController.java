@@ -5,11 +5,14 @@ import artepsy.testplatform.bo.TestCRSForm;
 import artepsy.testplatform.datamodels.request.TestCRSRequest;
 import artepsy.testplatform.datamodels.response.TestCRSResponse;
 import artepsy.testplatform.service.TestCRSService;
+import artepsy.testplatform.service.PDFService;
+import artepsy.testplatform.service.EmailService;
 import artepsy.testplatform.utils.QuestionAnswerInt;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,7 +30,8 @@ import java.util.stream.Collectors;
 public class TestCRSController {
 
     private final TestCRSService testCRSService;
-
+    private final PDFService pdfService;
+    private final EmailService emailService;
 
     @GetMapping("/formCRS")
     public String getForm(Model theModel){
@@ -43,7 +47,6 @@ public class TestCRSController {
 
     @GetMapping("/resultTestCRS")
     public String getResult(@ModelAttribute("answers") TestCRSResponse answers, Model model){
-
         if (answers == null) {
             // no answers in model - redirect to form or handle as needed
             return "redirect:/formCRS";
@@ -61,24 +64,38 @@ public class TestCRSController {
             return "formCRS";
         }
 
-        TestCRSResponse response = new TestCRSResponse();
         Map<Integer, Integer> answerMap = answers.stream()
-                .filter(qa -> qa.getAnswer() != null) // optional: skip nulls
+                .filter(qa -> qa.getAnswer() != null)
                 .collect(Collectors.toMap(
                         QuestionAnswerInt::getQuestionNumber,
                         QuestionAnswerInt::getAnswer
                 ));
         TestCRSRequest request = new TestCRSRequest(formCRS.getNumeClient(), formCRS.getMailClient(), answerMap);
-        response = testCRSService.scoreTestCRS(request);
-
+        TestCRSResponse response = testCRSService.scoreTestCRS(request);
+        response.setScores(answerMap);
         redirectAttributes.addFlashAttribute("answers", response);
 
         return "redirect:/resultTestCRS";
     }
 
-    @PostMapping("/api/scoreTestCRS")
-    public TestCRSResponse scoreTestCRSApi(@RequestBody TestCRSRequest request) {
-        log.info("Received request to score TestCRS: {}", request);
-        return testCRSService.scoreTestCRS(request);
+    @PostMapping("/sendEmail")
+    public String sendEmail(@ModelAttribute("answers") TestCRSResponse answers, Model model) {
+        try {
+            TestCRSRequest request = new TestCRSRequest(answers.getNumeClient(), answers.getMailClient(), answers.getScores());
+            pdfService.generateAndSendPDF(request);
+            model.addAttribute("answers", answers);
+            List<QuestionAnswerInt> scoresList  = new ArrayList<>();
+
+            for( int i = 1; i <= 28; i++){
+                scoresList.add(new QuestionAnswerInt(i, null));
+            }
+            model.addAttribute("formCRS", new TestCRSForm(scoresList, 0, 0, 0, 0, 0, 0));
+            return "formCRS";// Ensure data is still in the model
+        } catch (Exception e) {
+            log.error("Error sending email", e);
+            model.addAttribute("error", "Error sending email: " + e.getMessage());
+            model.addAttribute("answers", answers); // Ensure data is still in the model
+            return "formCRS";
+        }
     }
 }
