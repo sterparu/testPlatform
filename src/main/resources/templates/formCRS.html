@@ -50,6 +50,8 @@
             display: flex;
             gap: 1rem;
             margin-top: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .radio-option {
@@ -70,6 +72,7 @@
             border-radius: 50%;
             cursor: pointer;
             transition: all 0.3s ease;
+            margin-bottom: 0.5rem;
         }
 
         .radio-option input[type="radio"]:checked + label {
@@ -114,6 +117,40 @@
             color: var(--accent-color);
             font-weight: 500;
         }
+
+        @media (max-width: 600px) {
+            .question-container {
+                padding: 0.7rem !important;
+            }
+            .radio-options {
+                gap: 0.4rem;
+                flex-wrap: wrap;
+                justify-content: center;
+                margin-top: 0.7rem;
+            }
+            .radio-option label {
+                width: 28px;
+                height: 28px;
+                line-height: 28px;
+                font-size: 0.95rem;
+                margin-bottom: 0.3rem;
+            }
+            .form-container, .result-container {
+                padding: 0.7rem !important;
+            }
+            .header-section {
+                padding: 0.7rem 0 !important;
+            }
+            h1, h5 {
+                font-size: 1rem !important;
+            }
+            .mb-3 {
+                margin-bottom: 0.5rem !important;
+            }
+        }
+        .mb-3 {
+            margin-bottom: 1.2rem;
+        }
     </style>
 </head>
 <body>
@@ -133,9 +170,6 @@
 
             <div class="row justify-content-center">
                 <div class="col-md-8">
-                    <div class="mb-2">
-                        <p class="text-muted small bg-light p-2 rounded border-start border-3 border-primary"><em>* Vă informăm că numele și email-ul dumneavoastră nu sunt păstrate în datele aplicației.</em></p>
-                    </div>
                     <div class="mb-4">
                         <input type="text" class="form-control" id="numeClient" th:field="*{numeClient}" placeholder="Nume și prenume">
                         <div class="text-danger" th:if="${#fields.hasErrors('numeClient')}" th:errors="*{numeClient}"></div>
